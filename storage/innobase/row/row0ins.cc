@@ -1276,6 +1276,7 @@ row_ins_foreign_check_on_constraint(
 			dfield_set_null(&ufield->new_val);
 
 			if (!affects_fulltext
+			    && !foreign->self_referencing()
 			    && table->fts && dict_table_is_fts_column(
 				    table->fts->indexes,
 				    dict_index_get_nth_col_no(index, i),
@@ -1305,7 +1306,8 @@ row_ins_foreign_check_on_constraint(
 		bool affects_fulltext = false;
 
 		for (ulint i = 0; i < foreign->n_fields; i++) {
-			if (dict_table_is_fts_column(
+			if (!foreign->self_referencing()
+			    && dict_table_is_fts_column(
 				table->fts->indexes,
 				dict_index_get_nth_col_no(index, i),
 				dict_col_is_virtual(

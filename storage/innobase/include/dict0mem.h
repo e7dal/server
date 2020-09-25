@@ -1214,6 +1214,12 @@ struct dict_foreign_t{
 
 	dict_vcol_set*	v_cols;		/*!< set of virtual columns affected
 					by foreign key constraint. */
+	/** @return whether the foreign key is
+	self referencing */
+	bool self_referencing()
+	{
+		return foreign_table == referenced_table;
+	}
 };
 
 std::ostream&
